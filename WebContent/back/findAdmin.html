@@ -1,0 +1,70 @@
+<meta charset="UTF-8">
+<style>
+	#show_admin{
+		width:60%;
+	}
+</style>
+<div class="login_menu">
+	<ul>
+		<li><label>用户名:</label><input type="text" name="aname" /></li>
+		<li><label>手机号码:</label><input type="text" name="tel" /></li>
+		<li><label>密码:</label><input type="password" name="pwd" /></li>
+		<li><a class="easyui-linkbutton" data-options="plain:true" href="javascript:add()">添加</a></li>
+	</ul>
+</div>
+<!--
+<div id="admin">
+	<table class="easyui-datagrid" style="width:400px;height:250px" 
+	data-options="url:'admin.action?op=find',fitColumns:true,singleSelect:true">
+		<thead>
+			<tr>
+				<th data-options="field:'aid',width:100">Code</th>
+				<th data-options="field:'aname',width:100">Name</th>
+				<th data-options="field:'tel',width:100,align:'right'">Price</th>
+			</tr>
+		</thead>
+	</table>
+</div>-->
+<div id='a'><br/>
+	用户名:<input type="text" name="aname" />
+	<a class="easyui-linkbutton" data-options="plain:true" href="javascript:find()">查询</a>
+	<table id="show_admin"></table>
+</div>
+<script type="text/javascript">
+	//加载数据
+	$('#show_admin').datagrid({
+		url:'admin.action?op=findPage',
+		pagination:true,//分页工具条
+		pageList:[1,3,5,10,14,20],//每页显示数组的设置
+		pageSize:3,//自动给你讲pagesize以及第几页request传过去   叫rows 和page
+		toolbar:[{iconCls:'icon-reload',
+			handler:function(){
+				$('#show_admin').datagrid('reload');//根据url重新到admin.action中传op=find取得数据
+			}	
+		},'-',{iconCls:'icon-add',
+			handler:function(){
+				alert('添加');
+			}	
+		}],
+		columns:[[
+			{field:'aid',title:'管理员编号',width:'20%'},
+			{field:'aname',title:'管理员名称',width:'20%'},
+			{field:'pwd',title:'密码',width:'20%',formatter:function(value,row,index){
+				return '****************';
+			}},
+			{field:'tel',title:'电话号码',width:'20%',align:'right'},
+			{field:'aa',title:'操作',width:'20%',align:'center',formatter:function(value,row,index){
+				return '<a href="javascript:resetPwd('+row.aid+')">重置密码</a>';
+			}}
+		]]
+	});
+	//重置密码
+	function resetPwd(aid){
+		alert(aid);
+	}
+	function find(){
+		var name=$('#a input[name="aname"]').val();
+		console.log(name);
+		$('#show_admin').datagrid('reload',{aname:name})
+	}
+</script>

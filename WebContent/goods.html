@@ -1,0 +1,268 @@
+<!DOCTYPE html >
+<html >
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>天天生鲜-商品列表</title>
+    <link href="images/1.jpg" rel="icon" type="images/x-icon" />
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/goods.css">
+	<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="js/check.js"></script>
+    <script type="text/javascript" src="js/goods.js"></script>
+</head>
+<body>
+	<div id="yc_login">
+	<!-- 头部  -->
+	   <div class="header_con">
+				<div class="header">
+					<div class="welcome fl">欢迎来到天天生鲜</div>
+					<div class="fr">
+						<div class="login_info fl" v-if="onlogin">
+							欢迎：<em>[{{loginName}}]</em>
+						</div>
+						<div class="login_btn fl" v-if="outlogin">
+							<a href="login.html">登录</a> <span> | </span> <a
+								href="register.html">注册</a>
+						</div>
+						<div class="user_link fl">
+							<span> | </span> <a href="#">用户中心</a> 
+							<span> | </span> <a href="cart.html">我的购物车</a>
+							<span> | </span> <a href="order.html">我的订单</a>
+						</div>
+					</div>
+				</div>
+			</div>
+	
+		<!-- 搜索框 -->
+	    <div class="search_bar clearfix">
+			<a href="index.html" class="logo fl"><img src="images/logo.png"></a>
+			<div class="search_con fl">
+	             <script>
+	                $(function () {
+	                    $('.input_btn').click(function () {
+	                        q = $('.input_text').val();
+	                        if(q==""){
+	                        alert("请输入搜索内容");
+	                        }
+	                        else{
+	                            location.href = index.html;
+	                        }
+	                    })
+	                })
+	            </script>
+				<input type="text" class="input_text fl" name="q" placeholder="搜索商品">
+				<input type="button" class="input_btn fr" name="" value="搜索">
+			</div>
+            <div class="guest_cart fr">
+                <a href="cart.html" class="cart_name fl">我的购物车</a>
+                <div class="goods_count fl" id="show_count">{{goodsCount}}</div>
+            </div>
+		</div>
+	</div>
+	<!-- 商品分类 -->
+    <div class="navbar_con" id="">
+		<div class="navbar clearfix">
+			<div class="subnav_con fl">
+				<h1>全部商品分类</h1>
+				<span></span>
+                <ul class="subnav">
+                    <li><a href="goods.html" class="fruit">新鲜水果</a></li>
+                    <li><a href="#" class="seafood">海鲜水产</a></li>
+                    <li><a href="#" class="meet">猪牛羊肉</a></li>
+                    <li><a href="#" class="egg">禽类蛋品</a></li>
+                    <li><a href="#" class="vegetables">新鲜蔬菜</a></li>
+                    <li><a href="#" class="ice">速冻食品</a></li> 
+                </ul>              
+			</div>
+			<ul class="navlist fl">
+				<li><a href="index.html">首页</a></li>	
+                <li class="interval">|</li>
+                <li><a href="">手机生鲜</a></li>
+                <li class="interval">|</li>
+                <li><a href="">抽奖</a></li>
+			</ul>
+		</div>
+	</div>
+	
+	<div id="yc_show_goods">
+		<div class="breadcrumb" id="breadcrumb">
+			<a href="#">全部分类</a>
+			<span>&gt;</span>
+			<a href="#" id="type_name">{{typeName}}</a>
+		</div>
+	
+		<!-- 商品展示区域 -->
+		<div class="main_wrap clearfix">
+    	<!-- 新品推荐 -->
+		<div class="l_wrap fl clearfix">
+			<div class="new_goods">
+				<h3>新品推荐</h3>
+				<ul>
+                    <li>
+                        <a href="#"><img src="images/goods/goods003.jpg"></a>
+                        <h4><a href="#">牛奶草莓</a></h4>
+                        <div class="prize">￥12.00</div>
+                    </li>
+                    <li>
+                        <a href="#"><img src="images/goods/goods009.jpg"></a>
+                        <h4><a href="#">来自海南的香蕉</a></h4>
+                        <div class="prize">￥89.00</div>
+                    </li>
+                    
+				</ul>
+			</div>
+		</div>
+		<!-- 商品列表 -->
+		<div class="r_wrap fr clearfix">
+			<div class="sort_bar">
+				<a href="javascript:void(0);" id="normal" class="type active">默认</a>
+				<a href="javascript:void(0);" id="price" class="type">价格</a>
+				<a href="javascript:void(0);" id="manUse" class="type">人气</a>
+			</div>
+
+			<ul class="goods_type_list clearfix  show1">
+                <li v-for="good in goods">
+					<a :href="'detail.html#'+good.gno+'&'+typeName"><img :src="good.pics"></a>
+					<h4><a href="'detail.html#'+good.gno+'&'+typeName">{{good.gname}}</a></h4>
+					<div class="operate">
+						<span class="prize">&yen;{{good.price}}</span>
+						<span class="unit">{{good.price}}/{{good.unit}}</span>
+						<a href="javascript:void(0)" class="add_goods" title="加入购物车" @click="addCart(good.gno)"></a>
+					</div>
+				</li>
+				
+			</ul>
+
+			<!-- 分页栏 -->
+            <div class="pagenation">  
+                <ul>              
+                	<li v-for="i in total">
+                		<a href="javascript:void(0)" class="active" @click="findByPage(i)" v-if="i==pageNo">{{i}}</a>
+                		<a href="javascript:void(0)" v-else @click="findByPage(i)">{{i}}</a>
+                	</li>
+                </ul> 
+			</div> 
+		</div>
+	</div>
+	</div>
+	<!-- 版权所有 -->
+    <div class="footer">
+    	<div class="foot_link">
+        	<a href="#">关于我们</a> <span> | </span>
+            <a href="#">联系我们</a> <span> | </span>
+            <a href="#">招聘广告</a> <span> | </span>
+            <a href="#">友情链接</a>
+        </div>
+    	<p>CopyRight &copy; 2019 衡阳市源辰信息科技有限公司 All Rights Reserverd</p>
+        <p>电话：0734-8355998 湘ICP备16015987号-1</p>
+    </div>
+    <script type="text/javascript" src="js/vue.min.js"></script>
+    <script type="text/javascript" src="js/axios.min.js"></script>
+    <script type="text/javascript" src="js/checkLogin.js"></script>
+    <script type="text/javascript" src="js/qs.js"></script>
+    <script type="text/javascript">
+    	var tno;
+    	var rows=5;
+    	var page=1;
+    	var vm=new Vue({
+    		el:'#yc_show_goods',
+    		data:{
+    			typeName:'',
+    			goods:{},//商品信息
+    			total:0,//总页码数
+    			pageNo:1//当前页数
+    		},
+    		methods:{
+    			findByPage:function(idx){
+    				page=idx;
+    				this.pageNo=idx;
+    				axios({
+    	    			url:'goods.action?op=findPage',
+    	    			method:'get',
+    	    			params:{tno:tno,page:page,rows:rows}
+    	    		}).then(result=>{
+    	    			this.goods=result.data.rows;
+    	    		});
+    			},
+    			addCart:function(gno){
+    				//判断用户是否登录
+    				//检查是否登录  实例名.$data.xx可以访问实例中的data中的属性
+    				if(!login.$data.loginId){
+    					alert("请先登录。。。");
+    					location.href='login.html';
+    					return ;	
+    				}
+    				//如果购物车中数据添加成功，及时更新页面显示购物车的数据 (购物数据存在数据库，存在session)
+    				let flag=0;//标识符
+    				//先判断该商品是否存在购物车
+    				let lcarts=login.$data.carts;
+    				console.log(lcarts);
+    				if(lcarts.length>0){//购物车有数据
+    					for(let i=0,len=lcarts.length;i<len;i++){
+    						if(lcarts[i].gno==gno){//login.$data.goodsCount;效果一样
+    							//说明该商品已在购物车
+    							console.log(gno);
+    							flag=1;
+    							//发送请求  对于post请求关于参数封装  传递gno  cno
+    							axios.post("cart.action",qs.stringify({op:'update',cno:lcarts[i].cno}))
+    							.then(result=>{
+    								let data=result.data;
+    								if(data>0){
+    									alert('加入购物车成功。。。1');
+    								}else{
+    									alert('加入购物车失败，请稍后重试。。');
+    								}
+    							})
+    							return ;
+    						}
+    					}
+    				}
+    				//购物车中没有此数据
+    				if(flag==0){
+    					axios.post("cart.action",qs.stringify({op:'add',gno:gno,num:1}))
+    					.then(result=>{
+    						let data=result.data;
+    						console.log(data);//toPrintJson(response,i);
+    						if(data>0){
+    							//购物车数量要更新
+    							login.$data.goodsCount=login.$data.goodsCount+1;
+    							//将新添加的对象添加到购物车中  num 所以
+    							login.$data.carts=data;
+    							alert('加入购物车成功。。。2');
+    						}else{
+    							alert('加入购物车失败，请稍后重试。。。....');
+    						}
+    					});
+    				}
+    				//发送数据到服务器端
+    				//用session保存数据
+    			}
+    		},
+    		mounted:function(){//页面加载过程中
+    			axios.all([getGoodsInfo()]).then(axios.spread((fn1)=>{
+    				this.goods=fn1.data.rows;
+    				this.total=Math.ceil(fn1.data.total/rows);//总页数
+    				this.typeName=$('#type_name').text();
+    			}));
+    		}
+    		
+    	});
+    	//获取商品信息
+    	function getGoodsInfo(){
+    		var hash=decodeURI(location.hash);
+    		if(''==hash||hash.indexOf('&')<0){
+    			location.href='index.html';//没有按规定格式返回则返回首页
+    		}
+    		hash=hash.replace('#','').split('&');
+    		tno=hash[0];
+    		$('#type_name').text(hash[1]);
+    		return axios({
+    			url:'goods.action?op=findPage',
+    			method:'get',
+    			params:{tno:tno,page:page,rows:rows}
+    		});
+    	}
+    </script>
+</body>
+</html>
